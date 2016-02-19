@@ -16,6 +16,7 @@ public class ClockDisplay
 {
     private NumberDisplay hours;
     private NumberDisplay minutes;
+    private String AMPM;
     private String displayString;    // simulates the actual display
     
     /**
@@ -26,6 +27,7 @@ public class ClockDisplay
     {
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
+        AMPM = "AM";
         updateDisplay();
     }
 
@@ -34,11 +36,12 @@ public class ClockDisplay
      * creates a new clock set at the time specified by the 
      * parameters.
      */
-    public ClockDisplay(int hour, int minute)
+    public ClockDisplay(int hour, int minute, String AMPM)
     {
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
-        setTime(hour, minute);
+        this.AMPM = AMPM;
+        setTime(hour, minute, AMPM);
     }
 
     /**
@@ -50,6 +53,10 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
+        if(hours.getValue() > 11)
+            AMPM = "PM";
+        else
+            AMPM = "AM";
         }
         updateDisplay();
     }
@@ -58,7 +65,7 @@ public class ClockDisplay
      * Set the time of the display to the specified hour and
      * minute.
      */
-    public void setTime(int hour, int minute)
+    public void setTime(int hour, int minute, String AMPM)
     {
         hours.setValue(hour);
         minutes.setValue(minute);
@@ -70,6 +77,10 @@ public class ClockDisplay
      */
     public String getTime()
     {
+        if(hours.getValue() > 11)
+            AMPM = "PM";
+        else
+            AMPM = "AM";
         return displayString;
     }
     
@@ -78,7 +89,11 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
+        if(hours.getValue() > 11)
+            AMPM = "PM";
+        else
+            AMPM = "AM";
         displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+                        minutes.getDisplayValue() + AMPM;
     }
 }
